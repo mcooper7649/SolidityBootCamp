@@ -1,6 +1,6 @@
 ## Complete Developers Guide to Solidity
 ---
-(active repo)[https://github.com/mcooper7649/SolidityBootCamp.git]
+[active repo](https://github.com/mcooper7649/SolidityBootCamp.git)
 
 
 
@@ -30,3 +30,22 @@ There are two types of technology that are utilized in the blockchain space
         - Mist Browser
 
 Setup MetaMask Extension before we begin our next module.
+
+### MetaMask
+---
+
+1. Each MetaMask Account you create has 3 different keys generated
+    - Account Address
+    - Public Key
+    - Private Key
+
+2. This Account will interact with all the other ethereum networks.
+    - Main
+    - Test
+        - Ropsten
+        - Kovan
+        - Rinkeby
+
+3. Rinkeby Faucet Demo
+    - Make a request for ethereum with new MetaMask Address
+        - [rinkeby-faucet](rinkeby-faucet.com)
