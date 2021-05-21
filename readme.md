@@ -136,3 +136,161 @@
     - Strongly Typed
     - Similar to JavaScript
     - Has several huge, gigantic 'gotchas'
+
+2. When you Define you contract and are ready to deploy you must first run in through a Compiler
+    - The Compiler spits out two bits of information
+        - Byte code ready for deployment
+        - Application Binary Interface (ABI)
+            - This is key for writing applications that interact with your smart contracts, similiar to an API
+        
+3. Our JavasScipt Frontend will tap into our ABI which will then interface with the bytecode of the Smart Contract
+
+
+## Before we Code our First Remix Contract
+---
+
+- Preparation
+    - Delete code within Ballot.sol
+    - Change Compiler Version to  0.4.17+commit.bdeb9e52
+    - Turn on Auto Compile
+
+## Our First Contract
+--
+```
+pragma solidity ^0.4.17;
+
+contract Inbox {  
+    string public message;
+    
+    function Inbox(string initialMessage) public {
+        message = initialMessage;
+    }
+    
+    function setMesage(string newMessage) public {
+        message = newMessage;
+    }
+    
+    function getMesssage() public view returns (string){
+        return message;
+    }
+}
+```
+
+
+- Whats Remix?  (Remix)[remix.ethereum.org]
+    - Lets use the Web Based IDE for Solidity for this module
+    - Has Built in Tools and Plug-ins
+    - Great for Beginners
+
+## Code Breakdown
+---
+
+- Using the Default file Ballot.sol
+    - Declare Pragma
+        - Used 0.4.17 as per tutorial
+        - Solidity our code is written with
+    - Define our first contract
+        - contract Inbox 
+            - Defines a new contract that will have some methods and variables
+    - Inside the contract we declare the variable message
+        - string
+            - declares that message will only be a string datatype
+        - public
+            - storage variable
+            - accessble by anyone and persists on the blockchain
+            - not a local variable, that is thrown away when done with
+        - message
+            - name of variable 
+    - Declare 3 functions, Inbox, setMessage, getMessage
+        - Inbox
+            - Constructor function as it is has the same name as the contract
+                - Constructor functions are executed upon contract creation
+            - pass string initialMessage 
+            - declare public
+            - message = initialMessage
+        - setMessage
+            - pass string newMessage
+            - declare public
+            - message = newMessage
+        - getMessage
+            - declare Function name (getMessage)
+            - declare Function type (public view)
+                - Common Function Types Inlude
+                     - Can Only use one per function   
+                        - public - anyone can call this function
+                        - private - Only this contract can call this fucntion
+                     - These two mean the same thing
+                        - view - This function returns data and does not modify the contract's data
+                            - This means since we are just returning message we aren't modifying anyting on the contract
+                        - constant - This function returns data and does not modify the contract's data
+                    - pure - Function will not modify or even read the contract's data
+                    - payable - When someone calls this function they might send ether along
+
+            - declare Return Types (returns (string))
+        
+## Deploying with Remix
+---
+
+1. Before we deploy we need to go over our configuration
+    - Environment  
+        - Injected Web3
+            - interacts with MetaMask and Main/Test Nets
+        - JavaScript VM
+            - Local Virtual Machine for Local Testing
+        - Web3 Provider
+            - 
+
+    - Account
+        - This selects what account you want to test with
+            - If on Injected Web3, it will prompt your metamask or native client
+            - If on JavaScript VM, it will generate some generic fake ethereum account with 100 fake eth to use for testing locally.
+            - if on Web3 provider, 
+    
+    - Gas Limit
+        - Maximum amount of Gas we want to use to buiuld the contract
+    
+    - Value
+        - An amount of eth you want to transfer to the contract account upon creation
+
+    - Contract
+        - In the dropdown, select the .sol file with the name of the contract you want to deploy
+            - in our example, we used ballot.sol, contract.sol is the most common name
+    
+    - Contructor Function(s)
+        - If you look directly under the deploy button, you will see "INITIALMESSAGE: string"
+            - This is from our first function, the constructor function Inbox
+            - We must remember these are automatically called when we first deploy the contract aka create an instance
+            - Lets enter "Hi There!" into our INITIALMESSAGE field and hit transact or create for older versions of remix
+                - We should see a transaction hash in remix console
+    - Deployed Contracts
+        - We can now see a new property down on the bottom of deploy panel called "Deployed Contracts"
+            - It will show our contructor function and other deployed contracts in memory
+                - You will notice we have an instance of our functions available now
+            - With our deployed contract we can utilize and run the setMessage, getMessage and message functions locally
+                - if we run our getMessager you will see a return format:
+                    - 0: string: Hi There!
+                        - 0 represents the line number of the return messages, in our case it is only 0.
+                        - string represents the datatype
+                        - Hi There is the message
+                - if we run our setMessage to bye there
+                    - Then run our getMessage again, you can see the format is the same as before but with a new message
+    - First GOTCHA
+        - You will notice there is a "Message" button but we don't have a message function
+            - Whenever in solidity we declare a public variable, in our case "message"
+            - It will create a function automatically that returns the value of that variable
+                - it will have the exact same name as the public variable
+        - As you can see this function is autogenerated
+            - This function does the same as our getMessage function
+            - Since data in contract = $$$ we shouldn't have redundant code
+            - We can get rid of the getMessage function
+
+## Redeploying with remix
+---
+
+    - Lets remove getMessage
+        - You will notice our old instance of Inbox is still available in the panel
+        - We will need to re-deploy to get a new instance with the removed function
+            - First lets remove our old instance, click the X to delete it.
+        - Before we deploy, lets place a new INITIALMESSAGE
+        - After we Hit Deploy again, you will see a new instance of our Inbox contract
+            - You will notice it doesn't have getMessage anymore
