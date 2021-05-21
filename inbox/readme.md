@@ -101,7 +101,99 @@
     - ``npm install --save ganache-cli``
 
 7. Lets open our Inbox.test.js file in the test folder
+     ```
      const assert = require('assert');
      const ganache = require('ganache-cli');
-     const Web3 = require('web3')
+     const Web3 = require('web3')  //Notice Web3 is capitalized as its a constructor
+     ```
     
+8. Web3 versioning
+    - v0.xx
+        - Primitive interface
+            - only callbacks for async code
+    - v1.xx
+        - Support for promises and async/await
+
+
+## Web3 In-Depth
+---
+
+- Web3 as a constructor that creates an instance of a web3 library that can be used in our contract
+    - whenever we create an instance we have to configure the instance
+    - one thing in particular that needs to be setup in a provider
+
+ - Provider is communication layer between the web3 library and some ethereum network
+ - You always need to specify a provider as it needs to know what network to communicate on.
+ - Providers can be changed out depending on what network and features you need to connect with
+ - Use ganache.provider() when declaring your new Web3 constructer instance
+    - provider() will change depending on what network we are connecting to.
+
+```
+const assert = require('assert'); // assign a variable to assert
+const ganache = require('ganache-cli'); //assign a variable ganache
+const Web3 = require('web3')  //Notice Web3 is capitalized as its a constructor
+
+
+const web3 = new Web3(ganache.provider());
+```
+
+## Mocha
+---
+
+1. What is Mocha?
+    - Mocha is a TEST running framwork
+
+2. Mocha Functions
+    - it
+        - Purpose: Run a test and make an  assertion.
+            - take two values, one value that our code has produced and another value that should be equal to that variable. Then Compare the two.
+    - describe
+        - Purpose: Groups together 'it' functions.
+        - describe is organization in nature
+            it allows us to group together functions that test the same thing, for example
+        - Organizes our output of out tests too.
+    - beforeEach
+        - Execute some general setup code
+        - utility function that is used to extract some amount of logic that is common to our tests
+
+3. Back to testing
+    - lets add a class car
+        - add two default methods
+            - park() return stopped
+            - drive() return vroom
+    - next add a describe function below our class.
+        - our first argument will be string, a name to descibe our test, no relation to the class Car. 
+        - our second argument will be another function, an arrow function that will contain all the it statements.
+            - pass it two arguments, a string for organization 'park' works.
+            - make it so you know when you read the test out put you know what was tested.
+            - just like describe the it second argument is an arrow function
+                - inside that arrow function is where you put your setup/test/assertion logic
+                    ```
+                    assert.strictEqual(car.park(), 'stopped')
+                    assert.strictEqual(car.drive(), 'vroom')
+                    ```
+4. Now that we have 1 test setup and ready to run lets save the file and run mocha
+    - To run mocha we need to add a script to our package.json file
+    - inside the scripts propterty, add "test": "mocha" if it isn't there already.
+    - ``npm run test`` from terminal to run mocha
+         - you should see mocha appear to show you its running in terminal and a green check mark if your test passed
+
+5. Lets create a second it function to test th drive function.
+    - remember, inside describe is where we want to place it.
+    - inside the it create a new car instance using the constructor
+        - add an assert.strictEqual to the cars.drive() method, then check for a 'vroom' response
+
+6. This second test looks good but you can see we create a instance of car in each test and that is redundant.
+    - beforeEach can help us with this
+        - beforeEach(() => {
+
+        })
+    - beforeEach can declare a line of code before each test saving us redundant code
+    - Once we add the beforeEach with the ``const car = new Car();`` we can remove it from each it statement
+    - Great now we got the car instance variable out of the it statements but the assert wont recognize it anymore due it being a black level scope.
+        - we must drop the const  and add ``let car;`` outide of the before each to initialize it.
+
+6. type ``npm run test`` into terminal
+    - Success two tests are now complete.
+        - We don't actually need these test for the next module. So now we can delete it out. 
+            * Copied into inbox_old for reference later
