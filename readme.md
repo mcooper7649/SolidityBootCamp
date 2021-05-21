@@ -294,3 +294,44 @@ contract Inbox {
         - Before we deploy, lets place a new INITIALMESSAGE
         - After we Hit Deploy again, you will see a new instance of our Inbox contract
             - You will notice it doesn't have getMessage anymore
+
+## Contract Creation Transaction Details Breakdown
+---
+
+1. Similiar to when we send a currency trasaction, we have properties that are sent for each external to external account trasaction
+    1. Nonce
+        - How many times the sender has sent a transaction
+    2. to 
+        - This is empty, as an emptry to, signals we are going to create a contract
+    3. Value 
+        - Amount of ether to send to the target address
+    4. gasPrice
+        - Amount of ether the sender is willing to pay per unit of gas to get this transaction processed4
+    5. startGas/gasLimit
+        - Units of gas that this transaction can consume
+    6. V/R/S 
+        - Cryptographic pieces of data taht can be used to generate the senders account address. Generated from the sender's private key.
+        - 1 way cryptography, you need the private key to send the V/R/S but with V/R/S you cannot decrypto the private key
+
+2. When we deploy, instances are also picked up by nodes on whichever network you decide to use
+
+
+## More on running functions on the blockchain
+---
+
+1. Anytime we need to change ANYTHING on the blockchain, a transaction needs to be submitted
+    - you will notice we have two types of functions in our inbox contract
+        - getMessage, this only reads what is on the blockchain, and doesn't require a transactions
+        - setMessage, this changes the blockchain and thus requires and transaction
+
+2. There are 2 ways of Running Contract Functions
+    - 'Calling' a Function 
+        - Cannot modify the contracts data
+        - Can return data
+        - Runs Instantly
+        - Free to do
+    - Sending a Transaction to a Fuction
+        - Can Modify a contracts data
+        - Takes time to execute!
+        - Returns the transactions hash and NOT the value of the return of a function 
+        - Cost Money!
