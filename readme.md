@@ -335,3 +335,91 @@ contract Inbox {
         - Takes time to execute!
         - Returns the transactions hash and NOT the value of the return of a function 
         - Cost Money!
+
+## Gas | Wei Vs Ether
+---
+
+[eth-converter](etherconverter.online) - This helps us view the different units of measure of ether
+
+1. When we reference transaction fees on the network we are referencing money, but not like USD we are referencing the native currency of the Ethereum network
+
+2. Before we get started, lets look at Remix again and you will notice on the deploy tab, next to the value field we have a dropdown that lets us select our Gas options. 
+    - These are all units of measure, think of it like 1 dollar vs 100 cents, it wil be the same
+        - Wei - Smallest unit of Ether, think a satoshi unit in bitcoin, nothing smaller
+        - Gwei - larger
+        - Finney - even larger
+        - Ether - Main token, not the largest
+        - Many more, view the eth-converter link to see all
+3. Gas increases, depending on the code being executed
+    - Anytime we send a transaction on the blockchain we have to specify two properties values
+        - gasPrice - Amount of Wei the sender is willing to pay for unit of gas to get this transaction processed
+            - if we specify for our trasaction we want to spend 10 wei per unit of gas it is then mutiplyed by the amount of gas units needed to process the request.
+            - In our example we can see multiplycation function costs 5 gas to execute a multiply of two numbers
+                - 5 gas times 10 wei per unit of gas 
+                    - This would bring our total gass used to 50wei to multiply the two numbers
+                    
+        - startGas/gasLimit - Units of gas that this transaction can consume
+            - This puts a hard cap on how much we'd like to spend for the transaction
+                - For complex code, estimating total gas can be difficult due to DB sizes growing, or running loops etc. 
+                - This gasLimit gives us the option to set a limit and prevent huge financial losses
+
+4. What happens if we specify a gasLimit that is less than what we need to process?
+    - The node processing the code will process one line at a time and consume gas
+        - Once we get to 0 gas, the execution of the Function Immediately HALTS
+        
+5. Gas Limits Scope
+    - We don't see any big twitter or facebook like platforms on blockchain yea due to gas fees.
+    - Nobody wants to pay 1 dollar for example, to update their profile
+
+
+
+## Mnemonic 12-Word Phrase
+---
+
+[MnemonicCodeConverter](https://iancoleman.io/bip39)
+
+1. During Development Ethereum realized storing and keeping track of accounts with a public/private/address can get cumbersome very quickly. They created a 12 word Mnemonic Phrase alows us to generate an account with the 3 properties needed.
+
+2. BIP39 is the mnemonic Algorithm used by Ethereum
+    - This will generate MANY accounts, all bound and recoverable with that 12 word phrase
+
+3. 12 words is alot easier to memorize than 3 long unique hashs
+
+4. If you go to the Mnemonic Code Converter and input a twelve word seed, you can see all the accounts/walllets that are derived from that one seed.
+    - You can create a new account and input the seed into the converter and verify they match.
+
+
+## Get more Eth on Rinkby
+---
+ [rinkby-faucet](faucet.rinkeby.io)
+
+1. In order to get alot more eth, we need another faucet
+
+2. Share you wallet address on twitter and post the link to that post in the faucet
+
+
+## Contract Deployment to a live network
+---
+
+- We must remember the flow in which we deploy is as follows
+    - Contract Source
+        - Solidity Compiler
+            - ABI
+            - Contract Bytecode
+                - Rinkeby
+
+- What is Truffle?
+    - Truffle you will see referenced alot, it is a one stop shop for development of ethereum contracts
+    - Truffle CLI is a command line tool
+        - Handles Contract Creation
+        - Local Testing
+        - Deployment
+
+- Issues with Truffle
+    - Undergoing rapid development
+    - Some things don't work well
+    - Some things don't work at all
+    - Stuff breaks - patience is required
+
+
+* Check Inbox for next readme
