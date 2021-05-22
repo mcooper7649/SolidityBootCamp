@@ -197,3 +197,51 @@ const web3 = new Web3(ganache.provider());
     - Success two tests are now complete.
         - We don't actually need these test for the next module. So now we can delete it out. 
             * Copied into inbox_old for reference later
+
+    
+## Mocha Structure
+---
+
+1. The Structure of Mocha is as follows
+    - Mocha Starts
+    - Deploy a new contract (local instance on Ganache)
+    - Mianipulate the contract
+    - Make an Assertion about the contract
+    - Loop back to Deploy a contract
+
+2. As you can see we can use a beforeEach for the Deploy a new contract
+
+3. Then we can manipulate the contract and make our assertions using it statements
+
+4. As soon as Ganache starts, a set of accounts are automatically generated.
+    - They are in an unlocked state
+        - meaning we don't need to do anything with the public/private keys
+
+## Fetching Accounts from Ganache
+---
+
+1. In order to run our tests we are going to start with utilizing the web3 library and submitting and interacting with  our contracts on the Ganache Local Test Network by using the built in accounts. 
+
+2. How do we use web3 to access these accounts?
+    - We need to add our beforeEach
+        - Get a list of all acounts ``web3.eth.getAccount()``
+            - this eth module is one of many web3 built in modules that can tap into the networks functionality
+            - EVERY function in the eth network is async-ronous in nature, and that means its goin to retrun a promise
+        - Next lets chain on a .then arrow function with our list of accounts
+        - takes create take our fetchedAccounts and log them
+             
+                ```
+                beforeEach(()=> {
+                // Get a list of all accounts
+                web3.eth.getAccount()
+                .then(fetchedAccounts => {
+                    console.log(fetchedAccounts)
+                })
+                ```
+3. Lets add a describe stateement about our Inbox contract
+    - pass two arguments into descrbibe
+        - the name (for reference) of the file/function/contract being tested
+        - anonymous function with an it statement
+            - the it statement needs two arguments
+                - the decription (for reference) of what it does
+                - we can leave the logic empty for now
