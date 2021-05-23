@@ -245,3 +245,48 @@ const web3 = new Web3(ganache.provider());
             - the it statement needs two arguments
                 - the decription (for reference) of what it does
                 - we can leave the logic empty for now
+
+4. Refactoring to Async/Await
+    - We can get rid of the promise .then and use the more modern async to clean up our code
+    - lets add the await before web3
+    - assign accounts as the variable to the await
+    - add async just after the beforeEach
+    - we also need to put, let accounts; outside of the before each so that variable can be utilized by the it funtion of our test
+    - console.log accounts in the it function.
+    ```
+    beforeEach(async () => {
+    // Get a list of all accounts
+    accounts = await web3.eth.getAccounts()
+    });
+    ```
+
+
+## Writing the contract
+---
+
+5. Next we want to import the two pieces of data that our compiler generated
+    - Interface
+        - The ABI
+    - Bytecode
+        - The Data
+
+- How to Import
+    - const { interface, bytecode} = require ('../compile');
+
+
+6. Inside our beforeEach after accounts
+    ``new web3.eth.Contract(JSON.parse(interface))``
+        - new web3 eth module
+        - Contract is a constructor method so capitalized
+        - JSON.parse(interface) interface is the ABI code we get from the compiler
+        - Chain a deploy method and pass an object with data:bytceode,
+        - We also have an initial message argument that needs to be passed as our contract specifies
+            - This is the argument that is executed upon creation
+            - we need to create a arguments key inside our object
+            - and value will be an array with all the arguments that need to be pass upon execution.
+        - Lets chain a send method next
+            - The send is telling who is creating the contract
+            - Next, we need to specify the MAX amount of gas we want to use, for our test, lets use 1 million gas
+        - Lets assign inbox variable to our deployment code and don't forget to 'let' it outside so our IT function can test it.
+        - Also, because it is a contract deployment and will taek time we need to add the await flag before new to make it asyncronous
+
