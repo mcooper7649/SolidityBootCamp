@@ -286,7 +286,34 @@ const web3 = new Web3(ganache.provider());
             - and value will be an array with all the arguments that need to be pass upon execution.
         - Lets chain a send method next
             - The send is telling who is creating the contract
+                - The send requires a from and gas property
             - Next, we need to specify the MAX amount of gas we want to use, for our test, lets use 1 million gas
         - Lets assign inbox variable to our deployment code and don't forget to 'let' it outside so our IT function can test it.
         - Also, because it is a contract deployment and will taek time we need to add the await flag before new to make it asyncronous
 
+## Web3 with Contracts
+---
+
+- Goal
+    - Interact with deployed contract
+        - ABI is needed 
+        - Bytecode is not needed
+        - Address of deployed contract needed
+    - Create a contract
+        - ABI is needed
+        - Bytcode is needed
+        - Address of deployed contract not needed, because its not created!
+
+
+## Testing our contract logic
+---
+
+
+``assert.ok(inbox.options.address)``
+
+1. We can use another type of assert to test, assert.ok().
+    - we can tap into our inbox object that is created when we creeate the contract
+    - tap into options.address and it should hold the address of the newly created contract.
+    - the ok method checks to see if a value exists
+        - if null or undefined it will fail
+        - if truthy, it will pass
