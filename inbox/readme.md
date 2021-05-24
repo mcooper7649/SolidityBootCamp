@@ -457,4 +457,52 @@ Contract Deployed to 0xb342774e6E4fcf2725eeF7627584DC7b5fAdB67C
     - if we run the function setMessage, we will get a prompt from our wallet to submit a transaction
     - Now we can run message again and see that the original message has been replaced with the set message.
 
+## Project Overview
+---
 
+1. Why did we start with Remix and move into develooper environment?
+    - As you will see, most people will develop the contracts fairly quickly then need to spend alot more time developing the frontend, other platforms excel at that.
+    - Also Remix doesn't have version control
+
+2. Once we got got our Remix contract created we were able to run our compiler
+    - We used 'solc' known as the Solidity Compiler
+    - We then read in the contents of our contract
+    - Then we exported our compiled code
+
+3. Once our compliation script was complete, we began working on our TESTS
+    - Libraries Used
+        - web3   //Portal to the ethereum world
+            - Has our provider information
+        - ganache  //hosts local test network
+            - created the provider information for web3
+        - {interface, bytecode} // Raw data from compiler we will import, ABI and Contract
+        - Next Mocha was used to setup a testing harness
+            - using a beforeEach
+                - that automatically got our accounts
+                - then deployed a new instance to the ganashe local network
+                - This is executed before EACH test
+            - add a describe block
+                - Chaining 3 it statements
+                    - deploys a contract
+                    - assert.ok
+                    - has a default message
+                    - assert.equal
+                    - can change the message
+                    - assert equal
+
+4. Our Deploy Script
+    - import truffle hdwallet provider
+    - import web3
+    - import {interface, bytecode} from compile
+    
+    - configure provider with two arguments, Mnenonic Phrase and infura Test network address (our node to connect to)
+    
+    - we needed to create a deploy function just so we could get asysnc functionality
+    - next we created accounts and await for our accounts
+    - logged our deployment account
+
+    - Next we created result and await for our Parsed Contract Interface
+    - deploy passing data and arguments
+    - send passing gas accounts[0] // the account paying for it
+
+    - log result.options.address to see address of new contract
