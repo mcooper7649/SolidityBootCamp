@@ -11,16 +11,20 @@ let inbox;
 beforeEach(async () => {
     // Get a list of all accounts
     accounts = await web3.eth.getAccounts()
-
+    // Create the contract, configure the deploy and send.
     inbox = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode, arguments: ["Hi There!"] })
+    .deploy({ data: bytecode, arguments: ["Hi there!"] })
     .send({ from: accounts[0], gas: '1000000'})
 
   });
-  
+  // 
   describe("Inbox", () => {
     it("deploys a contract", () => {
       assert.ok(inbox.options.address)
+    });
+    it("has a default message", async () => {
+      const message = await inbox.methods.message().call();
+      assert.strictEqual(message, 'Hi there!')
     });
   });
   

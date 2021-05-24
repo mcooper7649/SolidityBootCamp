@@ -317,3 +317,23 @@ const web3 = new Web3(ganache.provider());
     - the ok method checks to see if a value exists
         - if null or undefined it will fail
         - if truthy, it will pass
+
+2. Lets add a second test, for checking if a default message has been generated.
+    - lets create another it function
+        - This needs to be aync due to it awaiting a response
+            - add before the anonymous fucntion argument
+        - create a message const
+            - add await as its asyncronous
+            - inbox (contract code)
+            - methods (default name that lets us tap into the contracts methods)
+            - message()call()  // this executes our message
+                - dont forget the (), this is because sometimes we need to pass arguments into methods
+        - Now that we have called our message, we can assert the value
+            - assert.strictEqual(message, 'Hi there!')
+
+```
+it("has a default message", async () => {
+      const message = await inbox.methods.message().call();
+      assert.strictEqual(message, 'Hi there!')
+    });
+```
