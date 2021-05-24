@@ -337,3 +337,22 @@ it("has a default message", async () => {
       assert.strictEqual(message, 'Hi there!')
     });
 ```
+
+
+3. For our 3rd test, we need to test the logic of chaning the message.
+    - give it a name for our test as the first argument for the it function
+    - add async to anonymous function as second argument
+        - add await
+            - tap into inbox.methods.setMessage()
+                - pass the new message as the argument
+                - chain send method to execute the setMessage
+                - pass an object inside our send method to tell the network who is paying for it
+                    - from: accounts[0] // this goes inside the object
+                        - this is our 1st account the array of accounts that ganache generates
+        - We don't need to add a variable as if this setMessage isn't successful it will crash the test.
+```
+it("can change the message", async () => {
+       await inbox.methods.setMesage('bye')
+       .send({ from: accounts[0]})
+    })
+```
