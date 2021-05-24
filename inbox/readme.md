@@ -442,4 +442,19 @@ Contract Deployed to 0xb342774e6E4fcf2725eeF7627584DC7b5fAdB67C
 
 [contract-on-rinkeby](https://rinkeby.etherscan.io/address/0xb342774e6E4fcf2725eeF7627584DC7b5fAdB67C)
 
+1. If we view our contract on rinkeby etherscan you can see our bytecode, txhash, block, when it was create, tx fee, everything that has happend to this blockchain.
+
+
+
+## Interact with Contracts using Remix
+---
+2. We can now interact with our contracts using the Remix ide immediately, instead of having to create a frontend.
+    - Copy your contract address and open Remix
+    - We need to change the Remix network to Inject Web3
+    - On the Deploy tab we can find the field "At Address" and paste in our contract address.
+    -  This will grant us access to the contract functions
+    - If we run the function message, its a read only message so it should return the value pretty instantly.
+    - if we run the function setMessage, we will get a prompt from our wallet to submit a transaction
+    - Now we can run message again and see that the original message has been replaced with the set message.
+
 
