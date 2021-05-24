@@ -356,3 +356,39 @@ it("can change the message", async () => {
        .send({ from: accounts[0]})
     })
 ```
+
+
+## Deploying to a REAL test network
+---
+
+[infura](https://infura.io/)
+
+1. Ganache connects to a PROVIDER and that info is send into our web3 Library.
+    - This time around we are going to be adding an account that some ETH on the test network (RINKEBY)
+        - Thus our provider needs our MNEMONIC key to interact.
+    - Infura has Public API that will interface with our Provider
+    - Infura also has a node on the Rinkeby Network that we can connect to, to broadcast our contract
+
+2. Signup to the infura API
+    - Create a new Eth Project
+    - Copy the Endpoint for the Rinkeby Network
+
+
+3. Configuring our Deployment Script
+    - First we need to install a package to help us connect with infura
+        - If you not using the boilerplate 
+        ``npm install --save truffle-hdwllet-provider@0.0.3`` 
+        - This package lets us unlock the account that will be used for the contract creation/execution
+        - It will also be our provider to connect to the Infura API
+    
+4. Create deploy.js inside our root directory
+    - Import HDWAlletProvider Module
+    - Require in Web3, as a constructor
+    - Import { interface, bytecode } from our compiler 
+    ```
+    const HDWalletProvider = require('truffle-hdwallet-provider');
+    const Web3 = require('web3')
+    const { interface, bytecode} = require('./compile')
+    ```
+5.  Create a provider instance using a new HDWalletProvder()
+        - We need to add the Account Mnemonic
