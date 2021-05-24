@@ -381,7 +381,7 @@ it("can change the message", async () => {
         - This package lets us unlock the account that will be used for the contract creation/execution
         - It will also be our provider to connect to the Infura API
     
-4. Create deploy.js inside our root directory
+4. - Create deploy.js inside our root directory
     - Import HDWAlletProvider Module
     - Require in Web3, as a constructor
     - Import { interface, bytecode } from our compiler 
@@ -390,5 +390,56 @@ it("can change the message", async () => {
     const Web3 = require('web3')
     const { interface, bytecode} = require('./compile')
     ```
-5.  Create a provider instance using a new HDWalletProvder()
-        - We need to add the Account Mnemonic
+5.  - Create a provider instance using a new HDWalletProvder()
+        - We need to add the Account Mnemonic inside
+            - lets use a new MetaMask Account for this
+            - backup seed somewhere secure
+            - Lets go back to the Infura Platform
+                - Grab the Rinkeby Test newtork, we will input that as our second argument
+
+6. - Lastly lets create a web3 instance and call a new Web3 construct passing our provider as the only argument
+
+``const web3 = new Web3(provider);``
+
+7. - Now we can use our web3 instance to deploy our contract
+    - unfortunately we need to use ASYNC to deploy our contract but you cannot use async outside of a function, so we will arbitrarily create a function so we can utilize async.
+
+    ```
+    const deploy = async () => { // we created and executed this function just for async.
+
+    };
+    deploy();
+    ```
+    - Now lets add some logic inside the async
+        - get all the accounts taht have been unlocked from our provider
+            - ``const accounts = await web3.eth.getAccounts();``
+            - * Remember one Mnemonic can generate MANY accounts
+        - If we add a console log next and show accounts[0], the deployment account, the one who pays for the deployment
+    - we can then right out the ACTUAL deployment statement next
+        - the first line stores our contract after it parses the interface asyncronously from the compiled version
+        - second line deploys an object with two properties
+            - data: bytecode //actual contract
+            - arguments: ['Hi There']  // all the arguments needed upon contract creation
+        - 3rd line we will send it with an object with two properties
+            - gas: 1000000  // maximum amount of gas we want to spend
+            - from: account[0] // Who will be paying the gas fee
+
+        - 4th line we will log our result with options.address chained
+            - This will show what address our contract address is.
+
+    ```
+         const result = await new web3.eth.Contract(JSON.parse(interface))  
+            .deploy({ data: bytecode, arguments: ['Hi there']})
+            .send({ gas: '1000000', from: accounts[0]})
+
+            console.log('Contract Deployed to', result.options.address);
+    ```
+
+## Viewing our Deployed Contract
+-- 
+Attempting to deploy from account 0x13a978359887BA697533f250e4461737c3e5ACa9
+Contract Deployed to 0xb342774e6E4fcf2725eeF7627584DC7b5fAdB67C
+
+[contract-on-rinkeby](https://rinkeby.etherscan.io/address/0xb342774e6E4fcf2725eeF7627584DC7b5fAdB67C)
+
+
