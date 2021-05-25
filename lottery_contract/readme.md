@@ -184,8 +184,95 @@ contract Lottery {
         - Grab the Slider and put it at the far left to start our debugger from the beginning
         - click the down arrow to step into each step of the hash
         - The debugger is the GO TO solution for debugging solidity contracts as console logging just isn't as useful
-                    
-
-                
 
 
+    ## Pseudo-Numbers Generator
+    ---
+
+    1. Once we have enough players who have 'enter'ed into our contract the 'manager' will need to 'pickWiner'.
+        - We need to create the pickWinner function
+            - We need to do it Randomly, pick a player from the players array.
+    
+    2. We JS or RUBY its alot easier to randomize this selection
+        - With solidity we don't have access to a random number generator
+        - So we need to FAKE it, or PSEUDO-random
+
+    3. One way that developers have been able to utilize a Pseudo RNG is by taking 3 numbers
+        - Current block difficulty
+        - Current Time
+        - Address of Entrants
+            - Next we run those through SHA3 Algorithy
+                - This translates to a REALLY big number
+        - WE MUST REMEMBER this is PSEUDO and not totally RANDOM
+
+    4. Lets create a helper function to choose a random number before we try and write pickWinner
+        - this function we will set to private as we won't want anyone to call or see this
+        - next we will mark it as view type, as we are not modifying any state or data in the contract the only goal of this function is to return a random number
+        -  we will put returns (uint) as it will return an 'unsigned integer 256'
+    
+    5. Inside our random block we want to take our
+        - Current block difficulty
+        - Curent Time
+        - Addresses of players
+            - Then feed them into the sha3 algorithm
+            - sha3 is a GLOBAL function we can use, no import needed
+                - keccak256() is essentially the same as sha3();
+            - block is a GLOBAL variable we have access to at any given time
+                - difficulty will return a number
+            - now is the 2nd argument that represents the current time, also a global variable
+            - players will be our 3rd argument passed, the array of addreses
+            - we specified in the function we need a uint and sha or keccak will return a hash
+                - so we need to wrap it with   uint() to convert our hash and meet requirements
+       ```
+        function random() private view returns (uint) {
+        return uint(keccak256(block.difficulty, now, players));
+            }
+        }       
+        ```
+
+    6. Redepoyment and Testing
+        - Once you clear previous deployments and run it again you will notice that there are no new function
+            - Because we set random as private it isn't available on the Remix Panel
+            - Now just for THIS ONLY instance lets make it public so we can test the random function
+                - Now that we have the function you can see it returns a really long number
+                - ok, lets change public back to private before we forget                    
+
+    7. Creating the pickWinner function
+        - The order in which we create this is as follows
+            - Call our 'random' fucntion
+                - random()
+                    - this.random is not needed
+            - Use the 'modulo' operator
+                - %
+            - Number of players in the lottery
+                - players.length
+        - This should select a Random number between 0 and players.length
+        - We declare it, as public
+            - in the block we, declare our index(to store)
+            - we run random to get a random number
+            - get the modulo of random by running it agains the arrays length.
+       
+        ```
+        function pickWinner () public {
+                uint index = random() % players.length;
+            }
+        ```
+
+    8. Now that we have the index we can select it from the players array ``players[index]``
+        - we can call the transfer() function on our winner, this transfer is available on every address.
+            - it takes units in wei  // players[index].transfer(1) This would transfer 1 wei
+                - we can utilize this.balance to send the value of the contract to the winner
+                    - this references the current contract
+                    - balance references the amount of money currently bound to it
+    ```
+    function pickWinner () public {
+        uint index = random() % players.length;
+        players[index].transfer(this.balance);
+    }
+    ```
+
+    9. Lets test our new function and see if we can enter with 1 eth and run pickWinner with only 1 entrant.
+        - This should return our eth and balance go back
+            - Redeploy
+            - Enter
+            - pickWinner
