@@ -173,6 +173,17 @@ contract Lottery {
         - Lets now enter from another address with .001 ether, not enough
             - we get the VM error: revert
             - notice how their is NO information to indicate what the error was
+
+    4. If we want to see more information on the Transaction we can click the 'Debug' button in remix on the transaction
+        - it will display 'status' of our trasaction at the top
+            - we can see 'false transaction mined but execution failed'
+        - below that we have the transaction has
+            - we can input that into the debugger add on
+        
+    5. Lets install the DEBUGGER addon to remix and we can step through the transaction just by  inputting the trasaction hash we generated on the previous step.
+        - Grab the Slider and put it at the far left to start our debugger from the beginning
+        - click the down arrow to step into each step of the hash
+        - The debugger is the GO TO solution for debugging solidity contracts as console logging just isn't as useful
                     
 
                 
