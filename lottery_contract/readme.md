@@ -138,7 +138,42 @@ contract Lottery {
             - We can tap into the msg.sender(the address who ran the function) to push the address to our players array
             
     
+    ## Validation with Require Statements
+    ---
+    
+    1. Now we should have a functioning contract. We should be able to begin our validation in our Virtual environment.
+        - Lets run deploy on our contract if we haven't already in Remix on the left hand panel
+            - After Deployment we shoud see our contract available function
+                - enter
+                    - When you click enter, you can then call manager on 0 and it should return the wallet address that ran the enter
+                - manager
+                    - If you click the managers it returns the address of the account who generated the contract
+                - players
+                    - if you run this function u must remember its a public array and to read a public array in solidity we need to specify which specific position in the array
+                    - after you ran enter with you default address, put 0 inside players and it should return the default address
+                    - try again, this time entering with a second wallet address inside of remix and run put 1 as the value for players
+    
+    2. Ok that works great but now we aren't getting prompted to enter our eth.
+        - require();
+            - This is used for validation
+            - We can pass a boolean expression 
+                - If it returns false, the function isn't executed, its cancelled, and no changes are maded to the contract
+                - If it returns true, the function continues
+            - We should put this obviously before we push to the players array
+            - We need add msg.value
+                - msg.value // Amount of ether (in Wei) that was sent along with the function invocation
+                  - now we want to charge .01 ether but this needs it in wei so lets go back to [https://etherconverter.online](https://etehrconverter.online) and put that in the ether field.
+                  - WoW thats a huge number and REALLY hard to read, opens yourself for errors
+                    - now in solidty we can add 'ether' and it will be translated succesfully.
 
+
+    3. Cool, now our enter fucntion should take money when we try to enter, lets give it a shot.
+        - Since we changed our contract lets re-deploy, FROM the primary dev wallet with .011 or more ether 
+            - run players 0, address shows up
+        - Lets now enter from another address with .001 ether, not enough
+            - we get the VM error: revert
+            - notice how their is NO information to indicate what the error was
+                    
 
                 
 
