@@ -75,13 +75,71 @@ There two major things to consider when creating our contract
             - Address of the accoutn that started the current funciton invocation
         - msg.value
             - Amount of ether (in wei) that was sent along with the function invocation
+```
+contract Lottery {
+    address public manager;  
+    function Lottery() public {
+        manager = msg.sender;
+        
+    }   
+}
+```
 
 5. Reference Types in Solidity
     - Fixed Array
         - Array that contains a single type of element. Has an unchanging length
+        - example int[3] would have a fixed array [1,2,3] or bool[2] would like this [true, false]
     - Dynamic Array
         - Array that contains a single of element. Has Can change in size over time
+        - example int[] [1,2,3] or bool[]   [true, false]
     - mapping
         - Collection of key value pairs. Think of Javascript objects, Ruby hashes, or Pythong dictionary. All keys must be of the same type, and all values msut be of the same types
+        - example:  mapping(string => string)   or mapping (string => bool)
+        - Used for storing a collecting of things, example a collection of Cars, Houses, or Couches
     - struct
         - Collection of key value pairs that can ahve different types
+        - example: struct Car{ string make; string model; uint value;}
+        - usually used for a singular thing, example: Car, House, Couch
+
+    - Reference Type GOTCHA
+        - Between Fixed Arrays and Dynamic Arrays
+            - When you have an Array instide another array (Nested Arrays)
+                - This is a 2-Dimensional Array or a Nested Dynamic Array
+        - Part1 of the Gotcha
+            - In the Solidity World there is no Issues with Making a Nested Dynamic Array
+            - In the ABI/JS/Web3 World Nested Dynamic Arrays Won't Work
+                - The Communication layer just can't handle nested arrays
+        - Part2 of the Gotcha
+            - Strings in Solidty are stored as Dynamic Arrays
+                - It means we have no way of transfering arrays of strings into JavaScript
+                
+    ## Entering the Lottery
+    ---
+
+    1. Initialize our players variable
+        - This will be an ARRAY of address
+            - First we put the type that will be stored in our array
+                - address[] in this case
+                - This creates a dynamic array that can ONLY store addresses
+                - If we put a number then it would have been a fixed array.
+            - We will put public because we are ok with having people see who entered our lottery
+            - Lastly we choose a name for our array, players in this case
+            ``address[] public players;``
+
+    2. Create our enter function
+        - Remember if someone calls this they want to enter into the lottery
+            - So we want to take that persons address and add it to the players array
+            - We also need to Send 1 ether into the prize pool when called
+                - This means we need to add the function type payable
+                    - payable // When someone calls this function they might send ether along
+    
+    3. Inside the enter block
+        - Lets add a ``players.push(msg.sender);``
+            - We can tap into the msg.sender(the address who ran the function) to push the address to our players array
+            
+    
+
+
+                
+
+
