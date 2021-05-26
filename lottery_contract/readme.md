@@ -324,4 +324,35 @@ contract Lottery {
         }
         ```
 
+
+
+    ## Return the Players Array
+    --
+
+    1. We know from a previous module that the players array can only be accessed currently by inputting a value to the players fuction and returning just that single array entry.
+        - this isn't very helpful and it's time consuming. Let's make a function to return the whole array
+        ```
+        function getPlayers() public view returns (address[]) {
+        return players;
+        }
+        ```
+
+        - When we break down this code we 
+            - create the function name getPlayers
+            - public is set, because we want anyone to be able to run it
+            - view is set as its contract type // No fees required
+            - returns (adddress[]) specifies that it returns a dynamce array of address type
+            - in the function block; return players, the global variable
+
+
+    2. Testing the Players Array
+        - Redeploy
+        - Enter two accounts into the lottery
+        - run getPlayers to return hte two accounts we entered
+        - pickWinner as a non-manager
+            - we want a revert error 
+        - pickWinner as a manager
+            - we want a success transactions
+        - run getPlayers again, our array should be empty
     
+
