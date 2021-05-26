@@ -580,3 +580,44 @@ describe('Lottery Contract', () => {
     - in our catch block we can assert(err) to see if we got an error
     - to be double sure our test fails,  can add assert(false) after our await. so this way if for some reason the lines before pass, it forces it to fail 
     - if the block above DOES fail then the catch is triggered
+
+
+
+## Testing Function Modifiers
+--
+
+1. In our previous test we used a pattern that lets us make sure people enter properly.
+
+2. We can take that test pattern, copy it into our new test and add onto it.
+
+3. We want to make sure that if a person who isn't the manager tries to run pickWinner, it doesn't let them
+    - Change the await line to lottery.methods.pickwinner().send();
+    - Change the from account to a non-manager account
+    - keep the assert(false);
+    - leave the catch(err){assert(err)}
+
+
+## End to End Testing
+--
+
+1. Things we want to test
+    - Enter a player into the contract
+    - Pick a winner
+    - Verify the winner receives some amount of money
+    - Verify the players array gets completely reset
+
+2. This is tricky with randomization and dynamic players array
+    - The easiest way to write our tests is write it with logic for 1 account
+    ```
+    await lottery.methods.enter().send({
+            from: accounts[0],
+            value: web3.utils.toWei('2', 'ether')
+        })
+    ```
+
+3. We need to compare the amount of eth before and after our account to confirm the sending functionality works
+    - Create an initialBalance using await web3.eth.getBalance on accounts[0]
+    - await then pickwinner from accounts[0];
+    - Create finalBalance using await web3.eth.getBalance on accounts[0]
+    - Create different taking finalBalance - intialBalance
+    - assert (difference > 1.8 ether using toWei)
