@@ -236,7 +236,9 @@ contract Lottery {
             - Now just for THIS ONLY instance lets make it public so we can test the random function
                 - Now that we have the function you can see it returns a really long number
                 - ok, lets change public back to private before we forget                    
-
+        
+        ## Creating pickWinner
+        --
     7. Creating the pickWinner function
         - The order in which we create this is as follows
             - Call our 'random' fucntion
@@ -276,3 +278,27 @@ contract Lottery {
             - Redeploy
             - Enter
             - pickWinner
+
+    10. Next we want to 'Reset' our contract
+        - This allows us to to start a new lottery after each winner has been picked
+        - For this to happen, we need to empty the players array after we select the winner
+        - This allows for us to deploy to the contract one time, but the lottery will run an infinite number of times
+        ``players = new address[](0);``
+        - This creates a brand new dynamic array of type address
+        - Dynamic because the [] have no number
+        - (0) indicates that we want it to have an initial array with nothing in it
+
+    11. Currently our contract allows for anyone to run pickWinner
+        - We need to configure it for only the manager
+        - Lets add a require as the first line of our pickWinner block
+            - ``require(msg.sender == manager);``
+            - Boolean logic and msg.sender to determine if manager ran the pickWinner function
+
+        - Perfect, lets redeploy, enter with an address, pickWinner with secondary address
+            - if you get VM error: revert, SUCCESS
+        - Notice how we used public
+            - We didn't try to use private as security because it won't work
+            - use require statements instead
+            
+
+    
