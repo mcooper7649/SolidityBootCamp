@@ -279,6 +279,8 @@ contract Lottery {
             - Enter
             - pickWinner
 
+    ## Reset our Contract
+    --
     10. Next we want to 'Reset' our contract
         - This allows us to to start a new lottery after each winner has been picked
         - For this to happen, we need to empty the players array after we select the winner
@@ -300,5 +302,26 @@ contract Lottery {
             - We didn't try to use private as security because it won't work
             - use require statements instead
             
+
+    ## Function Modifiers
+    --
+    - As you can see from our last module we are in a classic case of "Don't repeat yourself"
+         - We need to figure out a way to re-use the require function using a Function Modifier
+            
+    - What is a Function Modifier?
+        - When we use the modifier keyword we are adding a new function modifier to our contract
+        - Function Modifiers are used solely as a mean to reduce the amount of code you have to write
+        - we just created a modifier called restricted
+            - it can be anything you like, for example onlyManagerCanCall
+        - we then need to add one or more lines of code
+        - lastly we need to add a line with just a _;
+            - _ is where the block of code that is ran will be placed, think of it like a target
+
+        ```
+        modifier restricted() {
+        require(msg.sender == manager);
+        _;
+        }
+        ```
 
     
