@@ -356,3 +356,227 @@ contract Lottery {
         - run getPlayers again, our array should be empty
     
 
+## Time to Migrate to VSCode
+--
+1. Install 'lottery-boilerplate' files from course
+2. npm install or 'npm i' from terminal to get our dependencies
+
+    
+    
+
+## Setup Tests with Mocha
+--
+
+1. If we follow the tutorial we copy our Inbox contract to our Lottery Folder and need to update the file
+    - If you follow the guide it says to use the biolerplate, which is already configured. 
+
+2. We notice that compile.js has been configured for Lottery too
+
+* compile.js
+```
+const path = require("path");
+const fs = require("fs");
+const solc = require("solc");
+
+const lotteryPath = path.resolve(__dirname, "contracts", "Lottery.sol");  //loteryPath and Lottery.sol ahve been updated
+const source = fs.readFileSync(lotteryPath, "utf8");
+
+module.exports = solc.compile(source, 1).contracts[":Lottery"];  // we tell the compiler to look for the Lottery Contract
+```
+
+3. Notice deploy.js has been configured for Lottery As well
+    - There isn't any references inside this code to update from 'inbox' to 'Lottery'
+        - BUT, there is one thing that was changed
+        - the inbox code we used before passed an INITIAL argument, lottery doesn't need that
+            - Removed  ``arguments: {'hi, there'}`` from .deploy
+
+* deploy.js
+```
+const HDWalletProvider = require("truffle-hdwallet-provider");
+const Web3 = require("web3");
+const { interface, bytecode } = require("./compile");
+
+const provider = new HDWalletProvider(
+  "juice bicycle seek common shield hello below angry source share exact mobile",
+  // remember to change this to your own phrase!
+  "https://rinkeby.infura.io/v3/15c1d32581894b88a92d8d9e519e476c"
+  // remember to change this to your own endpoint!
+);
+const web3 = new Web3(provider);
+
+const deploy = async () => {
+  const accounts = await web3.eth.getAccounts();
+
+  console.log("Attempting to deploy from account", accounts[0]);
+
+  const result = await new web3.eth.Contract(JSON.parse(interface))
+    .deploy({ data: bytecode })
+    .send({ gas: "1000000", from: accounts[0] });
+
+  console.log("Contract deployed to", result.options.address);
+};
+deploy();
+```
+
+
+4. That's it for file preparation. we can begin writing our Lottery Tests
+
+
+## Coding the Tests
+--
+
+1. Preconfigure our Tests In Lottery.test.js
+    - require in 'assert', this is helper library that is part of the node standard library
+    `` const assert = require('assert'); ``
+    
+    - require in 'ganache', the local test network that only is created when we run our tests
+    ``const ganache = require('ganache-cli');``
+
+    - require in 'Web3', remember when we first require in web3 we require the constructor function
+    ``const Web3 = require('web3');``
+    
+    - next create our 'web3' instance, with new Web3 ganache.provider
+    ``const web3 = new Web3(ganache.provider());``
+    - remember when working with ganache we pass the ganache provider 
+    - upon moving to test network we will swap to the appropriate provider
+
+    - require in our interface (abi) and bytecode (contract data) from our compiler ('.../compile')
+    ``const { interface, bytecode } = require('../compile')``
+
+
+    - lets create two global variables (so our beforeEach can be used on other test functions)
+        - accounts
+            - stores the ginache generated accounts
+        - lottery
+            - stores our contract data
+
+2. We need to add a beforeEach next
+    - lets add the accounts var using the web3 eth library getAccounts function
+    - It will be asynconous in nature so needs to be in the block of our before each
+    - This will create a fresh set of accounts to run each test
+
+    - Lets add our lottery var to store our parsed interface
+    - this get a fresh contract before each test 
+
+    - add a .deploy function passing our object with {data: bytecode}
+    - add a .send function passing {from: accounts[0], gas: '1000000'} to complete the deployment
+    
+    ```
+    beforeEach(async () =>{
+    accounts = await web3.eth.getAccounts();
+    lottery = await new web3.eth.Contract(JSON.parse(interface))
+    .deploy({data: bytecode})
+    .send({ from: accounts[0], gas: '1000000'})
+    })
+    ```
+
+3. Now that our beforeEach is configured we are ready to begin our actual top level tests.
+    - lets begin with a describe statement
+    - Our first argument is the Descripter for the test
+    - 2nd is an anonymous function
+        - Our first it function argument we pass the discriptor
+        - Our 2nd is an anonymous function
+            - Inside that we assert.ok that the lottery.options address was created
+            - lottery is our contract variable that we created and stored globally
+```
+describe('Lottery Contract', () => {
+    it('deploys a contract', () => {
+        assert.ok(lottery.options.address)
+    })
+})
+```
+
+4. npm run test from terminal to run our test in mocha
+    - If Green Check, SUCCESS
+
+
+
+## More Tests
+---
+
+1. Now that we know our testing environment is configured and working we can begin to write the rest of our tests
+
+2. What tests do we write though?
+    - Ask yourself a question
+        - What behavior do you really care about with this contract?
+
+3. Lets create a test that checks if we allow one account to enter the lottery
+    - in our describe block after our first it statement lets add antoher
+    - first argument
+        - allows one account to enter
+    - second argument
+        - anonymous function
+            - asyncronous so we need to append before the ()
+            - await in the block
+            - lottery.methods.enter().send()
+                - this sends the enter method of our lottery contract
+            - inside the send object we have to specify two variables
+                - from: accounts[0]  //account from ganache to send from
+                - value: web3.utils.toWei('0.02, 'ether')
+                    - this allows us to use a web3 utility toWei to send .02 ether instead of typing out wei
+            - now we can use a const players to store the asyncronous data from lottery.methods.getPlayers().call()
+                - But we must pass an object argument in call
+                    - {from: accounts[0]}
+            - we can add an assert next to compare that the players[0] entry matches our account[0] wallet
+            ``assert.strictEqual(accounts[0, players[0]]);``
+            - We can add another that make sure that the length of our array only has 1 entry in it.
+            ``assert.strictEqual(1, players.length);``
+            * When using assert equal, the first argument is what it should be and the 2nd is what it is
+    ```
+    it('allows one account to enter', async () => {
+        await lottery.methods.enter().send({
+            from: accounts[0],
+            value: web3.utils.toWei('.02', 'ether')
+        });     
+        const players = await lottery.methods.getPlayers().call({
+            from: accounts[0]
+        })
+        assert.strictEqual(accounts[0], players[0]);
+        assert.strictEqual(1, players.length);
+    })
+    ```
+        
+4. For our next test we want to try to to get multiple accounts to enter.
+    - We can copy the code from our previous it statement, since their similiar.
+    - take the enter() function and duplicate it twice
+    - change the accounts to 1 and 2
+     next make sure our second assert accounts for 3 instead of 1 players.length
+    - npm run test
+    
+    ```
+    it('allows multiple accounts to enter', async () => {
+        await lottery.methods.enter().send({
+            from: accounts[0],
+            value: web3.utils.toWei('.02', 'ether')
+        });
+        await lottery.methods.enter().send({
+            from: accounts[1],
+            value: web3.utils.toWei('.02', 'ether')
+        });
+        await lottery.methods.enter().send({
+            from: accounts[2],
+            value: web3.utils.toWei('.02', 'ether')
+        });     
+        const players = await lottery.methods.getPlayers().call({
+            from: accounts[0]
+        })
+        assert.strictEqual(accounts[0], players[0]);
+        assert.strictEqual(1, players.length);
+    })
+    ```
+
+## Try-Catch Assertions
+---
+
+5. In our next test we want to make sure our user is sending the appropriate number of ether when we enter the lottery
+    - if you send less than .01 ether we DO NOT want to allow them to enter the contract
+    - This test is tricky as it we wan't to check to see if something doesn't work.
+    - it will be asyncronous
+    - in the block we will call lottery.methods.enter().send()
+        - inside hte send function we will pass an object
+            - from: accounts[0],
+            - value: 10  // we want to send a value too low to trigger the error
+    - Using TRY-CATCH we can tell the test to try a block of code and when it errors we can catch it
+    - in our catch block we can assert(err) to see if we got an error
+    - to be double sure our test fails,  can add assert(false) after our await. so this way if for some reason the lines before pass, it forces it to fail 
+    - if the block above DOES fail then the catch is triggered
