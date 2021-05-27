@@ -619,5 +619,32 @@ describe('Lottery Contract', () => {
     - Create an initialBalance using await web3.eth.getBalance on accounts[0]
     - await then pickwinner from accounts[0];
     - Create finalBalance using await web3.eth.getBalance on accounts[0]
-    - Create different taking finalBalance - intialBalance
+    - Create difference taking finalBalance - intialBalance
+        - u can log this to see the specific amount
     - assert (difference > 1.8 ether using toWei)
+
+## Ethereum App Architecture
+--
+
+1. We now are going to pivot into creating a Web Interactive Frontend to make use of this contract.
+
+2. In order to put together a frontend for a user to interact with this contract we are going to make use of the:
+React JS VIEW RENDING LIBRARY
+
+3. Why React?
+    - In Ethereum Architecture vs Traditional, the Server interaction with the client is very limited, as writing data to the blockchain must be done from the client.
+
+    - The only way to change data is through the use of public/private keys
+
+    - The user will never send the private keys to the server
+
+    - With traditional architecture we could get away with just plain html
+
+    - With Ethereum architecture and the most logic needing to be ran client side so they can sign the transaction
+        - We need to put more of the logic in the user browser 
+        - This means we need to use more libraries, more code, than we have in the past, this where React comes in
+
+    - React is easier that Vanilla JS
+
+    - Begin React Module
+    
