@@ -340,3 +340,47 @@ return <input onChange={event  => this.setState({ term: event.target.value })}/>
 ## Controlled Components
 --
 
+1. We are going to take the idea of state one step further and create a controlled field.
+
+2. This is a field, similiar to the <input> but the field is set by the state.
+
+3. Lets break the input tag up and add another property value
+```
+    <div>
+        <input 
+            value={this.state.term}
+            onChange={event  => this.setState({ term: event.target.value})} />
+    </div>
+```
+
+4. lets remove the onChange property next 
+     - if we type now into the input we can't type at all
+     - put the onChange back
+     - This basically shows you how we can input a value that is bound to the state, and that state is bound to the Event
+
+
+## Review
+--
+
+1. Things we've covered
+    - JSX
+    - Components
+    - State
+    - ES6
+        - Classes
+        - Arrow Functions
+        - Import/Export Statements
+    - Youtube API
+    
+2. Apps Structure
+    - Inside our index.js we have our base Component call APP
+        - we then import our SearchBar
+        - Add it to render inside the APP
+        - Our App is a Functional Component
+            - We could if we wanted add a class based component inside our App
+
+3. SeachBar Component Strucutre
+    - Makes use of State by updating the users input whenever the state chagnes
+    - Whenever a user changes some text we first update the state
+    - Which causes the component to render
+    - We made the input element a controlled component by telling it to retreive its value from state
