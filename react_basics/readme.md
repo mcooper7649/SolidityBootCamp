@@ -161,3 +161,153 @@ const App = () => {
 
 ## Component Structure
 --
+
+1. In this section we want to figure out the layout we want to use to structure our components
+
+2. We may have a single component for
+    - MAIN compoonent 
+    - search bar
+    - video player 
+        - description
+    We may have two comonents for
+    - video gallery
+        - individual video
+        - list of videos (nested components)
+
+3. React can handle many different components very fast all at once
+    - This is why we prefer to design our app in individual pieces
+
+4. Because we can create many different components we probably want to create a components folder to store them all, instead of our src folder
+
+5. Next we want to create all the components we just went over in secion 2 (except MAIN).
+    - search_bar.js
+    - video_detail.js
+    - video_list_item.js
+    - video_list.js
+
+## Youtube Search API Signup
+--
+
+[Google-Developers-Console](console.developers.google.com)
+
+1. We are going to use real videos in our app
+    - To do that we are going to signup to YouTube API
+    - Once we've obtained a key we can install a small package that makes using it much simpler
+
+2. Once your on the Dashboard
+    - Click API Manager from the Left Panel
+    - Create a key and copy it for the Youtube-Video-Data v3
+
+3. Lets install a package that lets us interface with YouTubes API
+    ``npm install youtube-api-search``
+
+4. Before we configure the API package we are going to cover a few important topics and setup the searchbar
+    - SearchBar
+        - Features Needed
+            - Text Box for a person to type in their search
+            - Button that when pressed search for what they typed
+
+        - Lets define our component the same way we did before
+        - inside our block lets return <input />
+            - this is a input box a user can type into
+        - Even though we have no references to React in our component ALL components need to import react
+            - this is needed due to transpiling
+                - remember it creats React.createElement
+        - To get search_bar rendered on index we need to export our code
+            - ``export default SearchBar``
+            - Any file that imports SearchBar can use the component now
+                - remember, with libraries we don't need to import the relative file path
+                - But with files we create, like components, we need specify the path
+            - ``import SearchBar from './components/search_bar'``
+        - Lets add our <SearchBar /> component into our app next
+        
+## Class Based Components
+---
+                    
+
+- Before we can move on we need to learn about another type of component, the class component
+    - What is the class component?
+        - When you want it to have some type of internal record keeping
+        - One that keeps track of itself and is aware of itself its been rendered
+        - We can upgrade our search_bar to have a class using es6
+        - lets refactor our search_bar
+            - first remove the old code (leave the import/export)
+            - type ``class SearchBar {}``
+            - It a JS object
+        - This will allow us to extend its behavior
+            ``extends React.Compoonent``
+            - If we add { Component }
+        - We still need to get it to return something, one of the native methods of the React.Component is render
+            ``render(){}``
+        - We want to add a return into the block with our <input /> jsx
+        
+## Handling User Events
+--
+
+1. We converted our SearchBar from a functioncal Component to a Class Component in our last module, so we can add additional functionality.
+    - We are going to be adding that functionality now.
+
+2. When the user interacts with a browser they are constantly creating events, clicking, typing, moving mouse, are commong events.
+
+3. There are two things we want to know about our SearchBar
+    - We want to know when a user types something
+    - We also want to know what they typed
+
+4. First we need to declare an event handler
+    - Our event handler is a function that should be ran whenever the event occurs
+        - onInputChange or handleInputChange are common
+    - Next we pass the event handler to the element want to monitor for events
+        - using the onChange={} and pass a reference the event handler
+        - ``turn <input onChange={this.onInputChange}/>;``
+    - So in our case, we want to know whenever the input element has its text changed
+
+5. onInputChange needs be passed an EVENT
+    - We can use e, event, eventObject as they are the most common
+    - The event object describes the context or info about the event that occurred.
+    - console.log(event.target.value) to see what is being passed
+    - console.log(event) to see all the event properties
+
+    ```
+    import React, { Component } from 'react';
+
+
+    class SearchBar extends Component {
+        render(){
+            return <input onChange={this.onInputChange}/>;
+        }
+
+        onInputChange(event){
+        console.log(event.target.value)
+        }
+    }
+
+    export default SearchBar;
+    ```
+
+6. Refactor it
+    - We can use an arrow function to refactor our code into just the return line
+    - we then delete the onInput Change function as we don't need it anymore
+    - Then we can remove the () around event, when its the only argument being passed
+
+```
+import React, { Component } from 'react';
+
+
+class SearchBar extends Component {
+    render(){
+        return <input onChange={event  => console.log(event.target.value)}/>;
+    }
+
+}
+
+export default SearchBar;
+```
+
+## Introduction to State
+--
+
+1. What is State?
+    - One of the hardest concepts to understand in React
+    - A plain Javascript Object that is used to record and react to user events
+    - each class based component has its own state object
+    - 
