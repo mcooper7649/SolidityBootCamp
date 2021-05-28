@@ -310,4 +310,33 @@ export default SearchBar;
     - One of the hardest concepts to understand in React
     - A plain Javascript Object that is used to record and react to user events
     - each class based component has its own state object
-    - 
+        - Whenever the component state changes, it immedaitely rerenders
+        - This also causes its children to rerender as well
+        - Before we ever use state inside of a component
+            - We NEED to initialize the state objects
+            - We set the property STATE to a plain javascript object inside the classes constructor method
+            
+
+2. Breaking down the State
+    - All JavaScript CLASSES have a constructor function
+        - This function is the first and only function called automatically whenever a new instance of the classes created
+        
+    - What is super?
+        - Well come back to this
+        - we need to pass props into super
+        
+    - To create a state we need to initialize it by typing
+        ``this.state = {term: ''};``
+
+3. Updating the state is different then creating.
+    - Only in the constructor will you see this.state =
+    - Everywhere else you will see this.setState = {}
+
+```
+return <input onChange={event  => this.setState({ term: event.target.value })}/>;
+
+```
+
+## Controlled Components
+--
+
