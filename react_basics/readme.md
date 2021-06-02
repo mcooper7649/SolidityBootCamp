@@ -505,4 +505,104 @@ const VideoList = () => {
 ## Video List Items
 --
 
-1. 
+1. Inside our props we have a set of properties available from our youtube videos.
+
+2. By creating some basic bootrap layouts we can tap into the props of the imageURL
+``const imageUrl = video.snippet.thumbnails.default.url;``
+
+3. We can also assign the video props to video
+``const video = props.video;``
+
+4. This lets us display the title of the video and thumbnail image easily.
+
+```
+import React from 'react';
+
+const VideoListItem = (props) => {
+const video = props.video;
+
+    const imageUrl = video.snippet.thumbnails.default.url;
+        return (
+            <li className="list-group-item">
+            <div className="video-list media">
+            <div className="media-left">
+            <img className="media-object" src={imageUrl} />
+            </div>
+
+            <div className="media-body">
+                <div className="media-heading">
+                    {video.snippet.title}
+                </div>
+            </div>
+            </div>
+
+            </li>
+        );
+};
+
+export default VideoListItem
+```
+
+
+## Detail Compoonent and Template Strings
+--
+
+1. Lets first configure the VideoDetail basics 
+    - import react
+    - VideoDetail fat arrow
+    - export default VideoDetail
+
+2. If we use es6 and replace props with {video} it will return just the videos
+
+3. Lets add the title JSX to our divs to add a title and descriptions
+```
+<div>{videos.snippet.title}</div>
+<div>{videos.snippet.description}</div>
+```
+
+4. Lets assign videoID to the property video.id.videoId;
+    - Then we can set URL 
+    ``const url = 'https://www.youtube.com/embed/' + videoId``
+
+5. Lets use some ES6 syntax on this as its more commonly found way of using string interpolation
+```
+    const videoId = video.id.videoId;
+    const url = `https://www.youtube.com/embed/${videoId}`;
+```                            
+
+6. Lets add the {url} we just created as the src for our iframe
+
+7. go Back to our APP or injex.js file and add our <VideoDetail /> component after our Searchbar
+
+
+## Handling NUll Props
+--
+
+1. We want to pass a specific video to our VideoDetail Component
+    - for our props we will pass video={this.state.videos[0]}
+        - If you check the console we get an error "Can't read property ID of undefined"
+        - This is due to this.state trying to access an arrray that is still empty because we haven't got our response back from YT
+        
+2. Lets add a if statemenet that returns Loading... while we wait for our props to load.
+```
+  if(!video) {
+        return <div>Loading....</div>
+    }
+```
+
+
+## Video Selection
+--
+
+1. When we pass our props through a component we dont have to use a format like video = props.video; to tap into video
+    - we can {video, onVideoSelect} to be able to call upon those directly without calling on props
+
+2. using that infomration lets create an onClick function for our <li> tag in the videolistitem.js
+
+3. Inside that fucntion we will pass the onVideoSelect function that will update our state and rerender our thumbnail with the image of the video from the videolist we just clicked on.
+
+4. This was an example of how we can pass around callbacks, try not to go to deep with this as it can be difficult for team members to understand if they join the project later on.
+
+
+## Styling with CSS
+--
