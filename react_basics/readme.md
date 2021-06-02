@@ -384,3 +384,125 @@ return <input onChange={event  => this.setState({ term: event.target.value })}/>
     - Whenever a user changes some text we first update the state
     - Which causes the component to render
     - We made the input element a controlled component by telling it to retreive its value from state
+
+
+## Youtube Search Response
+-- 
+
+1. We want to get some actual API searches in this module by using our Youtube API key
+
+2. We need to make a YouTube Call to get a list of videos
+
+3. Then we need to take that return/response and display it
+
+4. Downwards DataFlow
+    - This means only the most parent component inside the application should be responsible for fetching the data
+    - Whether from an API or Redux or another framework, it needs to come form the parent component
+    - Our Top Level Component is App
+
+5. Import YTSearch like this
+    ``import YTSearch from 'youtube-api-search';``
+
+    - Call the YTSearch() passing an object like this as our first argument
+    ``YTSearch({key: API_KEY, term: 'surfboards'})``
+
+    - Next we need to pass a function as our second argument
+        - this anonymous function takes our data and from our first argument query
+
+    - If we log our data wee can see all the videos we searched for
+
+
+## Refactoring Functional Components to Class Components
+--
+
+1. In order to pass our data from APP, a functional component into our Downwards Dataflow we need to convert App into a Class Component
+
+2. First lets add { Component } to our React Import
+
+3. Next instead of defining App with Const, we change it to class
+
+```
+class App extends Component {
+    render(){
+        return (
+            <div>
+                <SearchBar />
+            </div>
+        )
+    }
+}
+```
+
+4. We want to update the search term whenever a user types a new search query in
+    - We can use STATE to do this
+    - We need to setup a constructor function inside our APP, above the render
+    ```
+    constructor(props){
+        super(props);
+
+        this.state = {}
+    }
+    ```
+    - In our last module we used Term to store the query of the state for our search word.
+    - This time we want to use a word to describe the videos were searching for, lets use videos
+    - lets put an empty array as the value, as we will retreive back an array of videos
+
+## Props
+--
+
+Now that we got our state configured for YTSearch we can pass our video data to our video_list using props
+
+1. First lets prepare our video_list.js by importing react and creating videoList fat arrow function
+
+```
+import React from 'react';
+
+const VideoList = () => {
+    
+}
+
+```
+
+2. Next lets add into the return a <ul> and we add a the bootstrap className "col-md-4 list-group "
+
+3. Export default VideoList so we can use it
+
+4. Import our VideoList to our index.js
+
+5. Inside  our App.js, we can pass our state as a prop adding 
+``<VideoList videos={this.state.videos} />``
+
+6. If your component that is working with your prop is functional we will pass it using:
+    - this.props.videos.length
+
+7. If your component that is working with your prop is a class based component we will pass it using:
+    - props.videos.length
+
+
+
+## Building Lists with MAP
+--
+
+1. In the past we used for Loops to iterate arrays, we want to use MAP moving forward.
+
+2. This is a built in Helper, its a property of an array.
+
+3. Map will allow us to run a function on each item in the array
+
+4. This functionaly allows us to pass JSX and add it to each element in an array.
+
+
+## List Item Keys
+--
+
+1. When working with an Array of items of the same type, each child in that array will need a keyprop created or it will throw an error
+
+2. We can tap into the items.etag to get unique key id that youtube already generates for each video
+``key={video.etag}``
+
+3. now we don't have any console errors.
+
+## Video List Items
+--
+
+1. 
