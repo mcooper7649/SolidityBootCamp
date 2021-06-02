@@ -606,3 +606,64 @@ export default VideoListItem
 
 ## Styling with CSS
 --
+
+This next section we are just adding our CSS stylings. 
+
+```
+.search-bar {
+    margin: 20px;
+    text-align: center;
+}
+
+.search-bar input {
+    width: 75%;
+}
+
+.video-item img {
+    max-width: 64px;
+}
+
+.video-detail .details {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #eee;
+}
+
+```
+
+## Searching for Videos
+--
+
+1. We want to add the ability to search for new videos.
+    - Using a callback we can achieve this
+    
+2. First lets create a function called videoSearch and pass(term)
+    - inside the body we will move our search code
+
+3. We can create onSearchtermChange as a callback prop to searchbar, which then takes our term and updates our videoSearch
+
+4. Inside the search_bar.js lets  update our onChange that passes that event data to our onInputChange and updates the term and setState and rerenders
+
+## Throttling the Search Term Input
+--
+
+1. we can see that now when we type it seems to be lagging and update a lil too  frequently.
+
+2. We want to use lodash, to slow down how fast our function is called
+
+3. npm i lodash
+
+4. import _ from 'lodash';
+
+5. const videoSearch = _.debounce((term) => { this.videoSearch(term), 300})
+
+
