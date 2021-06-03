@@ -103,3 +103,165 @@ export default new web3.eth.Contract(abi, address)
 ```
 
 2. Now that we have our web3 eth Contract, we can call upon the same methods and functions that we did in the our Test suite
+
+
+## Rendering Contract Data
+--
+
+1. Now that we have our contract data we can work with it by importing it to our App.js
+``import lottery from '.lottery';``
+
+2. Inside our lottery we have an address, that is the manager, we want to somehow get this account rendered onto the page
+
+3. In order to get any information to render on a page, it will ALWAYS follow the same sequence of actions
+    - Component Renders
+    - componentDidMount called
+        - This lifecycle method is a common and useful REACT method for applying amethod only once
+    - 'Call' methods on contract
+    - Set data on 'state
+
+4. Inside of our componentDidMount we will call on the the manager method
+    - From our test module you remember we specified {from: accounts[0]}
+    - We don't need to as with this web3 provider as we are using MetaMask
+    - This Copy of web3 has a default account set, and that is the first account that is logged into MetaMask Currently
+
+
+```
+  componentDidMount(){
+    const manager = await lottery.methods.manager().call();
+  }
+
+```
+
+5. Next we can add our setState, because its a class, we will use THIS.
+    - Inside we can set the state as {manager: manager} mor just { manager } for es15 syntax
+
+6. Remember, whenever we are working with state, we want to add a contructor with props and super with prop and specify our default properties
+
+```
+class App extends Component {
+  constructor(props){
+    super(props);
+  
+
+    this.state = { manager: ''};
+  }
+
+  async componentDidMount(){
+    const manager = await lottery.methods.manager().call();
+
+    this.setState({ manager: manager});
+
+  }
+```
+
+7. Lasly we can add some HTML to render our the state of manager
+```
+  render(){
+  return (
+  <div>
+    <h2>Lottery Contract</h2>
+    <p>This Contract is Managed by {this.state.manager}</p>
+  </div>
+  )
+ }
+ ```
+
+ 8. ``npm run start`` and visit localhost:3000
+    - If no errors, it should render our new HTML
+
+
+## Refactoring and Instance Propeties
+--
+
+1. Earlier we mentioned we can create the constructor with props and then pass a super with props, THEN we can put this.state
+
+2. Thankfully in ES15 we can remove all that redundant code and just put
+
+old constructor and state
+```
+constructor(props){
+    super(props);
+  
+
+    this.state = { manager: ''};
+  }
+```
+
+new state
+```
+state = {
+    manager: ''
+}
+
+```
+
+## Accessing More Properties
+--
+
+
+1. Now that we know how to access our Manager Propterty from our contract lets try to access something else
+
+2. Lets take a look at our previous mockup
+    - We want to know how many people have entered
+        - create a players const
+        - await getPlayers 
+        - setState of players
+        - initialize players
+        - add in this.state jsx into html
+    - How much is in the contract balance
+        - create a balance const
+        - await web3 eth getBalance method on lottery.options.address
+        - setState of balance
+        - initialize balance
+            - as en empty string, even though its an object
+        - add in this.state jsx into html
+            - we first want to utilize the web3.utils.fromWei
+                - This lets us convert from a wei amount to a more viewable ether
+                ``{web3.utils.fromWei(this.state.balance, 'ether')}``
+                - Don't for get to pass the 2nd argument, 'ether'!
+
+
+## The Enter Form
+--
+
+1. Here we create a horizontal rule to seperate our sections
+2. Next a <form> is added
+3. h4 'Want to test your luck?'
+4. div with label, input, button
+    - label 'Amount of ether to enter'
+    - input, specify an onChange with event => setState({value:event.target.value})
+    - initialize value in the state as a string
+    - Add a button 'Enter'
+
+
+## Form Setup
+--
+
+1. When we click the 'Enter' Button we really mean, to send a transaction to the contract with the amount of ether we specied in the input field.
+
+2. Lets add an event handler, this watches for the submit event on the form
+    - inside the <form> tag, we can add an onSubmit
+        -{this.onSubmit}   //Next we will create this onSubmit function
+
+3. onSubmit we want to create in our componentDidMount
+    - we will specify its async and pass an event 
+    - event.preventDefault(); to prevent normal browser submit
+    - const accounts = await web3.eth.getAccount(); 
+    - await lottery.methods.enter().sent()
+        - from: accounts[0]
+        - value: web3.utils.toWei to convert our value property back to wei
+        - pass the 'ether' 
+```
+      onSubmit = async (event) => {
+        event.preventDefault();
+
+        const accounts = await web3.eth.getAccount();
+
+        await lottery.methods.enter().send({
+          from: accounts[0],
+          value: web3.utils.toWei(this.state.value, 'ether')
+        })
+      }
+  }
+```
