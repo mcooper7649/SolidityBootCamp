@@ -68,3 +68,38 @@
 
 7. To deploy our contract we just run
     ``node deploy.js`` from our console
+    
+8. This will compile our script and attempt to deploy to the Rinkeby Network
+
+## Adding our Information to our Lotto_React Project
+--
+
+1. From our previous module we should have to addresses available
+    - Deploy from account
+        - 0x52e484E2C2Ca5d9b5C344ECF66f0E1B4F3113960
+    - Contract Deployed to Address
+        - 0xCbAEAA49f50523a489DE90f32821a74c60A00a49
+
+2. We now want to COPY and PASTE our ABI and Address and add them to our Lotto_React FrontEnd
+
+3. Lets import web3 as well
+```
+import web3 from './web3';
+
+const address = '0xCbAEAA49f50523a489DE90f32821a74c60A00a49'
+const abi = [{"constant":true,"inputs":[],"name":"manager","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"pickWinner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getPlayers","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"enter","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"players","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]
+```
+
+
+## Local Contract Instances
+--
+
+We are going to create a local COPY of our Deployed Lottery Instance from Rinkeby in the next module.
+
+1. We need to add the following line of code to export our Contract for local instances.
+
+```
+export default new web3.eth.Contract(abi, address)
+```
+
+2. Now that we have our web3 eth Contract, we can call upon the same methods and functions that we did in the our Test suite
