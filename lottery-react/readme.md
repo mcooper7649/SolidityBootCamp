@@ -244,10 +244,10 @@ state = {
     - inside the <form> tag, we can add an onSubmit
         -{this.onSubmit}   //Next we will create this onSubmit function
 
-3. onSubmit we want to create in our componentDidMount
+3. onSubmit we want to create just after componentDidMount
     - we will specify its async and pass an event 
     - event.preventDefault(); to prevent normal browser submit
-    - const accounts = await web3.eth.getAccount(); 
+    - const accounts = await web3.eth.getAccounts(); 
     - await lottery.methods.enter().sent()
         - from: accounts[0]
         - value: web3.utils.toWei to convert our value property back to wei
@@ -265,3 +265,33 @@ state = {
       }
   }
 ```
+
+## Entering the Lottery
+--
+
+1. We finished our last module by creating the enter form and configuring the submit button with the onSubmit function.
+
+2. We want to add a little warning logic to help the user understnad that the transaction is pending.
+
+3. We can acheive this by adding
+``   this.setState({ message: 'Waiting on Transaction success...'});``
+
+above our enter().send() method, then after we can add
+``this.setState({ message: 'You have been entered!'});``
+
+4. Make sure to initialize message as a string 
+
+5. Now that we have our message configured, lets add it to the html using jsx
+    - lets add an <hr> and <h1> tag below our form
+
+6. Using {this.state.message} we can display our message status
+
+7. We must remember that we have a minimum ether that needs to be submitted to be entered
+    - We need greater than 0.01 ether, for example. 0.011 is the minimum in ether
+
+8. Now if we click the enter button we should see our message and also a prompt from our metamask
+
+9. If you submit from the MetaMask Client we will now get our 'Waiting on Transaction success' message
+    - yay we did it!
+
+10. Notice how long it took. It is nessecary to create message prompts when working with blockchain as our users can get confused.
