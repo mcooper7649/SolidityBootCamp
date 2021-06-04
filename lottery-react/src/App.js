@@ -1,5 +1,4 @@
 import React, { Component } from 'react'; 
-import logo from './logo.svg';
 import './App.css';
 import web3 from './web3'
 import lottery from './lottery';
@@ -40,7 +39,21 @@ state = {
 
 
       };
-  
+      
+      onClick = async () => {
+
+        const accounts = await web3.eth.getAccounts();
+
+        this.setState({ message: 'Waiting on Transaction success...'});
+
+
+        await lottery.methods.pickWinner().send({
+          from: accounts[0]
+        });
+        this.setState({ message: 'A Winner has been picked!'});
+
+
+      };
 
   render(){
   return (
@@ -64,7 +77,11 @@ state = {
       </button>
     </form>
     <hr />
+    <h4>Ready to Pick a Winner?</h4>
+    <button onClick={this.onClick}>Pick a winner!</button>
+    <hr />
     <h1>{this.state.message}</h1>
+    
   </div>
   )
  }

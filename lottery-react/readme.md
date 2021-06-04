@@ -295,3 +295,33 @@ above our enter().send() method, then after we can add
     - yay we did it!
 
 10. Notice how long it took. It is nessecary to create message prompts when working with blockchain as our users can get confused.
+
+
+## Picking a Winner 
+---
+
+1. Great we have the ability to Enter our Lottery but now we need to add the Option to Pick Winner
+
+2. For this example we are going to render a Pick Winner Button below our Enter (like our mockup)
+    - Anyone will be able to see and press it
+        - Only the Manager can press it without error
+
+3. Lets add another <hr /> and <h4> tag
+    - 'Ready to Pick a winner?'
+    
+4. Create a button with text after our h4
+    - 'Pick a Winnner'
+
+5. Lets add a onClick event to our button
+    - onClick={this.onClick}
+
+6. Next we need to define our onClick method, above render like we did w/ on Submit
+
+7. We can use the same syntax, as we did with our onSubmit
+    - remove event as our argument and event.preventDefault() as were not submitting a form.
+    - Update enter() in our lottery.methods to pickWinner()
+    - Update our 2nd message to 'A Winner has been picked'
+    - Remove the value: from our pickWinner() as it has no requirement to submit, other than normal gas fees
+
+8. We may want to display the 'Winner' but the pickWinner method doesn't actually return any data, so we can't determine that yet., we could add a lastWinner[index] logic to our contract to determine who won but for this example we won't add it to keep it simple.
+
