@@ -55,7 +55,7 @@
 
 2. First Take Functions
     - Campaign
-        - Constructor function that sets the minimumContribution and the owner
+        - Constructor/Contract function that sets the minimumContribution and the owner
     - contribute
         - Called when someone wants to donate money to the campaign and become an 'approver'
     - createRequest
@@ -69,4 +69,60 @@
 ## Time to Remix
 ---
 
+[remix.ethereum.org](remix.ethereum.org)
+
 1. Now that we our basic requirements and structure kinda sorted out, we can begin our work on our contract over at remix. 
+
+2. We are going to implement our contract design we just went over in remix before we head over to our IDE to begin our testing
+
+3. We can open the ballot.sol again from our previous projects and remove all the code, except for the pragma portion
+
+4. First thing we want to create is the contract 
+    - we need to give it a name, if you look at our first take functions
+    - This is Campaign, our constructor 
+    - Inside our Block we are going to put our information about 'Campaign'  in the first line.
+        - address [type]
+        - public 
+        - manager // variable name for person managing this contract 
+
+5. Now that we have defined Campaign, we can create the contract function 'Campaign'
+    ```
+     function Campaign() public {
+        manager = msg.sender;
+    }
+}
+
+ - We must remember msg is a global variable we don't define, it's always available to us.
+    - The sender property of msg refers to who is trying to create the contract aka donate to the campaign
+
+6. Now that we have manager variable created, lets create minimumContribution variable next
+    - Constructor/Contract function that sets the minimumContribution and the owner
+    - uint public minimumContribution
+    - now we can pass unint minimum as our argument
+        - then assign it to our global variable minimumContribution
+
+```
+pragma solidity ^0.4.17;
+
+contract Campaign {
+    address public manager;
+    uint public minimumContribution;
+    
+    function Campaign(uint minimum) public {
+        manager = msg.sender;
+        minimumContribution = minimum;
+    }
+}
+```
+
+7. For our next function, contribute we can see that money will be handled as we are contributing to the contract
+    - We will need to mark this function not just as public but also 'payable'
+    - When someone calls this function we need to make sure it is greater than the minimumContribution
+    - We can add in a require statement to compare how much money the user is sending
+    ``require(msg.value > minimumContribution);``
+    - if value doesn't meet requirements function is immediately exited and not executed
+
+
+8. If the require statement is met, we can move on with the next line
+    - approvers.push(msg.sender);
+    - This pushes the msg.sender address to the approvers array.
