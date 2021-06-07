@@ -214,4 +214,42 @@ struct Request {
 
 ```
 
-- Please Remember  this just defines the idea of a Request, the outline, the structure, we still need to create a struct instance.
+- Please Remember  this just defines the idea or type of a Request, the outline, the structure, we still need to create a struct instance.
+
+
+## More On Function Modifiers
+--
+
+1. In this next module we are going to work on the createRequest function.
+
+2. We are also going to create our request array
+    - We need create a request array that specificically holds types request as variable
+
+3. Below our struct code
+    - ``Request[] public requests``
+        - Notice how we declare it with a capital R, like we did with our struct
+        - An Array of struct type is with a capital letter
+        - now we can tap into our array by typeing ``request[3]`` for example
+
+4. Something about our createRequest function
+    - We probably only want our manager to be able to call it
+    - lets add  the modifier restricted code
+        
+```
+    modifier restricted (){
+    require(msg.sender == manager);
+    _;
+}
+```
+
+
+## Creating Struct Instances
+--
+
+1. Now that we have our modifier restricted, we can begin work on our createRequest function
+
+2. after our contribute function
+    - we want it to be public
+    - we want it to be only called by manager so lets make it restricted
+    
+3. if we look at our struct Request, you can see we have description, value and recipient that need to be specified by the manager when they createRequest. So lets add to our function first
