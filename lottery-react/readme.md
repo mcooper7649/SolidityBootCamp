@@ -325,3 +325,11 @@ above our enter().send() method, then after we can add
 
 8. We may want to display the 'Winner' but the pickWinner method doesn't actually return any data, so we can't determine that yet., we could add a lastWinner[index] logic to our contract to determine who won but for this example we won't add it to keep it simple.
 
+
+
+## Project Complete
+--
+
+Congratulations on Completing your first complete contract and front end project.
+
+See ./kickstarter/readme.md for next course overview

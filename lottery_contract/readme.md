@@ -648,3 +648,40 @@ React JS VIEW RENDING LIBRARY
 
     - Begin React Module
     
+
+
+
+    ## Application OverView
+    --
+
+    1. From the terminal, lets run `sudo npm i -g create-react-app`
+
+    2. This app will be focused on functionality and less on design
+    
+    3. Layout of Lottery Contract 
+        - Lottery Contract
+            - This contract is manage by 
+            - There are currently X people enterered, competing to win X amount of ether
+
+        - Want to try your luck?
+            - Amount of ether to enter <input> field
+            - Enter button
+        
+        - Time to pick a winner?
+            - Pick Winner Button
+        
+        - Status text area
+            - X has won!
+
+    
+    4. In our Layout, The Lottery Contract will display and retreive this data through calls to the contract
+        - In the 'Want to try your luck?' section we can create a send to the enter fucntion
+        - In the 'Time to pick a winner' section we can create a send to the pickWinner function
+        - In the Status text area we cann display the wallet who won last.
+
+    ## Create-React-APP
+    --
+
+    1. For this Module we will install the create-react-app and create a new directory called 'lottery-react'
+
+    

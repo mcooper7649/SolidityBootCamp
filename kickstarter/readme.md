@@ -126,3 +126,92 @@ contract Campaign {
 8. If the require statement is met, we can move on with the next line
     - approvers.push(msg.sender);
     - This pushes the msg.sender address to the approvers array.
+
+
+## Time to Begin Testing
+--
+
+1. Now that we have our contract created. Lets begin deploy it so we can begin testing afterwards.
+
+2. In Remix, lets take a look at our contract
+    - You can see the unint minimum is needed for our Campaign to execute, we need to input into the field next to 'Deploy' in remix. This is Wei, not Ether.
+
+3. Click 'Deploy' after we specified 100 in the field neext to deploy
+    - Below you will see our instance of our contract
+        - contribute
+            - if we pass the value 101 wei, we can contribute
+        - approvers
+            - Array of Approvers
+        - manager
+            - manager address
+        - minimumContribution
+            - returns "100" wei
+
+## The Request Struct
+--
+
+1. Before we begin, we need to understand the different Reference Types in Solidity
+
+2. Reference Types
+- Name
+    - Fixed Array
+    - Dynamic Array
+    - Mapping
+    - Struct
+- Notes
+    - Array that contains a single type of element. Has an unchanging length
+    - Array that contains a single type of element. Can change in size over time
+    - Collection of key/value pairs. Think of Javascript Objects, Ruby Hashes, or Python dictionary. All keys must be of the same type, and all values must be of the same type
+    - Collection of key value pairs that can have different types
+- Examples
+    - int[3] --> [1, 3, 3]   or    bool[2] --> [true, false]
+    - int[] ---> [1,2,3] or     bool[]--->[true, false]
+    - mapping(string => string) or mapping (string => bool)
+    - struct Car { string make; stirng model; unint value;}
+
+    
+## New Struct Inside our Contract
+--
+
+1. Were going to create a new struct inside our contract is going to be called 'request'
+    - The struct is going to have a couple fields to describe the purpose of this request
+    
+
+Request Struct
+--
+
+- Name
+    - Description
+    - Value
+    - Recipient
+    - complete
+    - ???
+- Type
+    - string
+    - uint
+    - address
+    - bool
+    - ??
+- Purpose
+    - Describes why the reqeust is being created
+    - Amount of money that the manager wants to send  the vendor
+    - Address that the money will be sent to
+    - True if the request has already process(money sent)
+    - Voting Mechanism!
+
+2. Now that we understand the basic layout of our Request struct we can begin Writing the Contract Code.
+    - We want to start at the top, above the variables
+
+3. We can now create our struct now that we now our name and type
+
+```
+struct Request {
+        string description;
+        uint value;
+        address recipient;
+        bool complete;
+    }
+
+```
+
+- Please Remember  this just defines the idea of a Request, the outline, the structure, we still need to create a struct instance.
