@@ -253,3 +253,33 @@ struct Request {
     - we want it to be only called by manager so lets make it restricted
     
 3. if we look at our struct Request, you can see we have description, value and recipient that need to be specified by the manager when they createRequest. So lets add to our function first
+    - Don't forget to specify data type
+
+4. We now have our Request newRequest new Request()
+    - lets pass an object inside
+    - lets pass our struct key value pairs (You can also use another syntax)
+    - NOT RECOMMENDED
+    ``Request(description, value, recipient, false);`` 
+    - This is the same as our other request code on the right hand side
+        - Except we are only passing values
+        - This is shorthand, it copys the TYPES exactly from the struct, so they need to be in the same order
+            - While it seems convenient, it can create a ton of small issues later
+
+
+```
+function createRequest (string description, uint value, address recipient) 
+    public restricted {
+        Request newRequest = Request({
+            description: description,
+            value: value,
+            recipient: recipient,
+            complete: false
+        });
+        requests.push(newRequest);
+    }
+```
+
+- Code Break Down
+    - Request // Get Ready to create a new Variable that will contain a 'Request'
+    - newRequest // The variables name is 'newRequest'
+    - = Request // Create a new instance of Request
