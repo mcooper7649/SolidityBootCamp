@@ -283,3 +283,49 @@ function createRequest (string description, uint value, address recipient)
     - Request // Get Ready to create a new Variable that will contain a 'Request'
     - newRequest // The variables name is 'newRequest'
     - = Request // Create a new instance of Request
+
+
+
+## Storage and Memory
+--
+
+1. Storage and Memory can mean two different things when we are refencing them in the world of Solidity
+
+2. Storage/Memory
+    - Sometimes references where our contract stores data
+    - Sometimes references how our solidity variables store values
+
+3. Where our contract holds data
+    - Data Holding Places
+        - Storage
+            - Holds Data bewteen function calls
+            - Pretty much like a computer's hard drive
+        - Memory
+            - Temporary placee to store data
+            - Pretty much like a computer's RAM
+
+4. How our solidity variables reference values //Variable Declaration Keywords
+    - 'Storage' when using the storage keyword
+        - it changes how a variable behaves
+        - REMEMBER that if you are using storage it will change your public variable if their interconnected
+    - 'Memory' when using the memory keyword
+        - it change how a variable behaves
+        - Memory will not modify variables that are interconnected and are cleared when function is closed
+
+5. Whenever we pass a function as an argument, they are auto assumed to be memory type variables
+    - We can add hte memory variable to make it clear for other developers, RECOMMMENDED
+    - If we use the storage keyword instaead of memory, it won't attempt to make a copy of the array and will modify the storage.
+    - Lets add memory now to our createRequest now that we understand, and clear the error.
+
+    ```
+      function createRequest (string description, uint value, address recipient) 
+        public restricted {
+        Request memory newRequest = Request({
+            description: description,
+            value: value,
+            recipient: recipient,
+            complete: false
+        });
+        requests.push(newRequest);
+    }
+    ```
